@@ -1,0 +1,13 @@
+google-generativeai
+requests
+python-dotenv
+tableauserverclient
+xmltodict
+google-cloud-storage
+flask
+google-cloud-pubsub
+PyGithub
+google-cloud-logging
+gunicorn
+flask-cors
+google-cloud-firestore
