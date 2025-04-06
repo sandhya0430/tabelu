@@ -1,0 +1,39 @@
+<relations>
+	<relation connection="bigquery.0p1zzex150wb6n1dt8xyv1sei2z6" name="Custom SQL Query" type="text" looker_derived="yes">SELECT a.Order_ID, a.Order_Date, a.Region, a.Category, a.Sub_Category, sum(a.Sales) as Sales, sum(a.Profit) as Profit, count(a.Quantity) as Quantity FROM `elastic-pocs.Super_Store_Sales.Orders` as a
+inner join `elastic-pocs.Super_Store_Sales.Returns` as b
+on a.Order_ID = b.Order_ID
+group by 1,2,3,4,5</relation>
+<\relations>
+
+<columns>
+	<column-instance column="[Order_ID]" derivation="CountD" name="[ctd:Order_ID:qk]" pivot="key" type="quantitative" role="dimension" looker_datatype="count_distinct" />
+	<column-instance column="[Category]" derivation="None" name="[none:Category:nk]" pivot="key" type="nominal" role="dimension" looker_datatype="string" />
+	<column-instance column="[Region]" derivation="None" name="[none:Region:nk]" pivot="key" type="nominal" role="dimension" looker_datatype="string" />
+	<column-instance column="[Profit]" derivation="Sum" name="[sum:Profit:qk]" pivot="key" type="quantitative" role="measure" looker_datatype="sum" />
+	<column-instance column="[Sales]" derivation="Sum" name="[sum:Sales:qk]" pivot="key" type="quantitative" role="measure" looker_datatype="sum" />
+	<column-instance column="[Order_Date]" derivation="Year" name="[yr:Order_Date:ok]" pivot="key" type="ordinal" role="dimension" looker_datatype="date_year" />
+	<column-instance column="[Order_Date]" derivation="Quarter" name="[qr:Order_Date:ok]" pivot="key" type="ordinal" role="dimension" looker_datatype="date_quarter_of_year" />
+	<column-instance column="[Calculation_417216348520423424]" derivation="User" name="[usr:Calculation_417216348520423424:nk]" pivot="key" type="nominal" role="measure" looker_datatype="string" />
+<\columns>
+
+<calculations>
+	<calculation class="tableau" formula="IF SUM([Profit]) &gt; 1000 THEN &quot;High Profit&quot;&#10;ELSEIF SUM([Profit]) &gt;= 500 AND SUM([Profit]) &lt;= 1000 THEN &quot;Medium Profit&quot;&#10;ELSE &quot;Low Profit&quot;&#10;END" />
+<\calculations>
+<filters>
+	<filter xmlns:ns0="http://www.tableausoftware.com/xml/user" class="categorical" column="[federated.1wjsq3o05i3tvl18kzuib0031ipf].[none:Category:nk]">
+        <groupfilter function="level-members" level="[none:Category:nk]" ns0:ui-enumeration="all" ns0:ui-marker="enumerate" />
+      </filter>
+	<filter class="categorical" column="[federated.1wjsq3o05i3tvl18kzuib0031ipf].[none:Region:nk]">
+        <groupfilter function="level-members" level="[none:Region:nk]" />
+      </filter>
+	<filter xmlns:ns0="http://www.tableausoftware.com/xml/user" class="categorical" column="[federated.1wjsq3o05i3tvl18kzuib0031ipf].[yr:Order_Date:ok]">
+        <groupfilter function="level-members" level="[yr:Order_Date:ok]" ns0:ui-enumeration="all" ns0:ui-marker="enumerate" />
+      </filter>
+	<filter xmlns:ns0="http://www.tableausoftware.com/xml/user" class="categorical" column="[federated.1wjsq3o05i3tvl18kzuib0031ipf].[:Measure Names]">
+            <groupfilter function="union" ns0:op="manual">
+              <groupfilter function="member" level="[:Measure Names]" member="&quot;[federated.1wjsq3o05i3tvl18kzuib0031ipf].[sum:Sales:qk]&quot;" />
+              <groupfilter function="member" level="[:Measure Names]" member="&quot;[federated.1wjsq3o05i3tvl18kzuib0031ipf].[sum:Profit:qk]&quot;" />
+              <groupfilter function="member" level="[:Measure Names]" member="&quot;[federated.1wjsq3o05i3tvl18kzuib0031ipf].[ctd:Order_ID:qk]&quot;" />
+            </groupfilter>
+          </filter>
+</filters>

@@ -101,10 +101,13 @@ def process_files(xml_content: str, workbook_name: str, files_structure: Dict, l
     """Process different types of files from the workbook."""
 
     if "view_files" in files_structure:
-        # logger.info(f"<SPEED_METER> Processing view files. | {process_id}", extra=log_context)
         file_logger(process_id, f"<SPEED_METER> Processing view files.")
         view_content = xml_view_manipulation(xml_content)
+        os.makedirs('views', exist_ok=True)
         for file_name in view_content:
+            file_path = os.path.join('views', file_name)
+            with open(file_path.replace(' ', '_'), "w") as file:
+                file.write(view_content[file_name])
             file_content = view_agent(view_content[file_name], file_name)
             file_content = process_view(file_content, workbook_name)
             create_text_file(
@@ -114,24 +117,9 @@ def process_files(xml_content: str, workbook_name: str, files_structure: Dict, l
                 file_content, 
                 dir=workbook_name
             )
-            # logger.info(f"<SPEED_METER> View file created: {file_name}", extra=log_context)
             file_logger(process_id, f"<SPEED_METER> View file created: {file_name}")
-        # for file_name in files_structure["view_files"]:
-        #     view_content = xml_view_manipulation(xml_content)
-        #     file_content = view_agent(view_content, workbook_name)
-        #     file_content = process_view(file_content, workbook_name)
-        #     create_text_file(
-        #         file_name, 
-        #         "view", 
-        #         workbook_name, 
-        #         file_content, 
-        #         dir=workbook_name
-        #     )
-        #     # logger.info(f"<SPEED_METER> View file created: {file_name}", extra=log_context)
-        #     file_logger(process_id, f"<SPEED_METER> View file created: {file_name}")
 
     if "model_files" in files_structure:
-        # logger.info(f"<CODE_BLOCK> Processing model files. | {process_id}", extra=log_context)
         file_logger(process_id, f"<CODE_BLOCK> Processing model files.")
         for file_name in files_structure["model_files"]:
             file_content = model_agent(xml_content, workbook_name)
@@ -142,14 +130,16 @@ def process_files(xml_content: str, workbook_name: str, files_structure: Dict, l
                 file_content, 
                 dir=workbook_name
             )
-            # logger.info(f"<CODE_BLOCK> Model file created: {file_name} | {process_id}", extra=log_context)
             file_logger(process_id, f"<CODE_BLOCK> Model file created: {file_name}")
 
     if "dashboard_files" in files_structure:
-        # logger.info(f"<DASHBOARD> Processing dashboard files  | {process_id}", extra=log_context)
         file_logger(process_id, f"<DASHBOARD> Processing dashboard files.")
         xml_dashboards = xml_dashboard_manipulation(xml_content)
+        os.makedirs('dashboards', exist_ok=True)
         for dashboard in xml_dashboards:
+            file_path = os.path.join('dashboards', workbook_name)
+            with open(file_path.replace(' ', '_'), "w") as file:
+                file.write(xml_dashboards[dashboard])
             file_content = dashboard_agent(xml_dashboards[dashboard],workbook_name)
             create_text_file(
                 dashboard, 
@@ -158,7 +148,6 @@ def process_files(xml_content: str, workbook_name: str, files_structure: Dict, l
                 file_content, 
                 dir=workbook_name
             )
-            # logger.info(f"<DASHBOARD> Dashboard file created: {file_name} | {process_id}", extra=log_context)
             file_logger(process_id, f"<DASHBOARD> Dashboard file created: {dashboard}")
 
 
@@ -177,20 +166,6 @@ def get_messages():
         }), 400
 
     try:
-        # logs = get_logs_with_filter(process_id)
-        # formatted_logs = []
-        # seen_messages = set()  # Set to track unique messages
-
-        # for log in logs:
-        #     message = log.get("textPayload", "").split("|")[0].strip()  # Extract the message
-
-        #     if message not in seen_messages:  # Check if message is already processed
-        #         seen_messages.add(message)  # Add message to the set
-        #         formatted_logs.append({
-        #             "message": message,
-        #             "type": log.get("severity", "INFO"),  # Extract log type (default to INFO)
-        #             "timestamp": log.get("timestamp", "")  # Extract timestamp
-        #         })
         formatted_logs = get_file_logs(process_id)
 
         return jsonify({
@@ -224,9 +199,7 @@ def get_tableau_files():
     """
     try:
         config = load_tableau_config(TABLEAU_BUCKET_NAME, TABLEAU_CONFIG_FILE)
-
         if "files" in config:
-            # Transform the output to match the required structure
             files = [
                 {"title": file["tableau_file_name"], "status": file["Progress"]}
                 for file in config["files"]
@@ -255,17 +228,12 @@ def process_workbook():
     data = request.get_json()
     process_id = data.get('process_id')
     workbook_name = data.get('workbook_file')
-    # logger = get_logger(__name__)
     if not workbook_name:
         error_msg = "Missing workbook_file in the request"
-        # logger.error(error_msg)
-        #log_to_pubsub(error_msg, process_id or "MISSING", "MISSING", "ERROR")
         return jsonify({"error": error_msg}), 400
 
     if not process_id:
         error_msg = "Missing process_id in the request"
-        # logger.error(error_msg)
-        #log_to_pubsub(error_msg, "MISSING", workbook_name, "ERROR")
         return jsonify({"error": error_msg}), 400
 
     if not config_manager.is_tableau_file_present(workbook_name):
@@ -277,7 +245,6 @@ def process_workbook():
     log_pubsub = partial(log_to_pubsub, process_id=process_id, workbook_name=workbook_name)
 
     try:
-        # logger.info(f"<DOWNLOAD> Downloading {workbook_name} from GCS. | {process_id}", extra=log_context)
         file_logger(process_id, f"<DOWNLOAD> Downloading {workbook_name} from GCS.")
         log_pubsub("Downloading workbook from GCS.")
         download_file_from_gcs(
@@ -287,9 +254,7 @@ def process_workbook():
            workbook_name
         )
         workbook_base_name = workbook_name.removesuffix('.twb')
-        #download_workbook_by_name(tableau_details, f"./{workbook_base_name}", workbook_base_name)
 
-        # Logging
         file_logger(process_id, f"<RIGHT_ARROW> {workbook_name} is being processed.")
 
         # Check if the downloaded file is .twbx
@@ -315,7 +280,6 @@ def process_workbook():
         with open(twb_file) as xml_file:
             xml_content = xml_file.read()
 
-        # logger.info(f"<FILE_STRUCTURE> Extracting file structure. | {process_id}", extra=log_context)
         file_logger(process_id, f"<FILE_STRUCTURE> Extracting file structure.")
         log_pubsub("Extracting file structure.")
         files_structure = structure_agent(xml_content)
@@ -323,27 +287,7 @@ def process_workbook():
         files_structure['view_files'] = get_view_list(xml_content)
         process_files(xml_content, workbook_base_name, files_structure, log_context,process_id)
         
-        # logger.info(f"<DASHBOARD> Completed Dashboard Building | {process_id}", extra=log_context)
         file_logger(process_id, f"<DASHBOARD> Completed Dashboard Building.")
-        # cleanup_steps = [
-        #     (f"<FLAG> Finishing up processing| {process_id}", 
-        #      lambda: upload_folder_to_gcs(
-        #          LOOKER_PROJECT_ID, BUCKET_NAME, 
-        #          workbook_base_name, workbook_base_name
-        #      )),
-        #     (f"<FLAG> Completed Views, Model and Dashboards | {process_id}", 
-        #      lambda: clear_cache_folder(
-        #          workbook_base_name, f"{workbook_base_name}.twb"
-        #      )),
-        #     (f"<FLAG> Uploading to GitHub | {process_id}", 
-        #      lambda: download_gcs_folder(
-        #          BUCKET_NAME, LOOKER_PROJECT_ID, LOOKER_PROJECT_ID
-        #      )),
-        #     (f"<FINISH_FLAG> Code conversion COMPLETED for {workbook_name} | {process_id}", 
-        #      lambda: upload_to_github(LOOKER_PROJECT_ID)),
-        #     (f"DONE | {process_id}", 
-        #      lambda: clear_cache_folder(LOOKER_PROJECT_ID))
-        # ]
 
         cleanup_steps = [
             (f"<FLAG> Finishing up processing", 
@@ -366,7 +310,6 @@ def process_workbook():
         ]
 
         for message, operation in cleanup_steps:
-            # logger.info(message, extra=log_context)
             file_logger(process_id, message)
             log_pubsub(message)
             operation()
@@ -380,7 +323,6 @@ def process_workbook():
 
     except Exception as e:
         error_message = f"An error occurred during processing: {str(e)}"
-        # logger.error(error_message, extra=log_context)
         file_logger(process_id, error_message, type="error")
         config_manager.update_progress(workbook_name, "ERROR")
         log_pubsub(error_message, level="ERROR")
@@ -388,4 +330,3 @@ def process_workbook():
 
 if __name__ == "__main__":
     app.run(debug=True)
-

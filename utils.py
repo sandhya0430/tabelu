@@ -7,6 +7,11 @@ from google.cloud import pubsub_v1
 from github import Github, GithubException
 from dotenv import load_dotenv
 from logger.logging import get_logger, file_logger
+import base64
+from io import BytesIO
+from PIL import Image
+from agents.gemini import generate_image_response_with_gemini
+
 
 load_dotenv()
 logger = get_logger(__name__)
@@ -170,7 +175,6 @@ def download_file_from_gcs(bucket_name, folder_name, file_name, destination_path
     blob = bucket.blob(blob_path)
 
     blob.download_to_filename(destination_path)
-    logger.info(f"File {file_name} downloaded to {destination_path}")
 
 def upload_file_to_gcs(bucket_name, folder_name, file_name, source_path):
     """
@@ -417,9 +421,11 @@ def load_tableau_config(TABLEAU_BUCKET_NAME,TABLEAU_CONFIG_FILE):
 import xml.etree.ElementTree as ET
 
 def handle_thumbnail(root):
+    thumbnails = root.find("thumbnails")
+    thumbnails_string = ET.tostring(thumbnails)
     for thumbnails in root.findall("thumbnails"):
         root.remove(thumbnails)
-    return root
+    return root, ET.fromstring(thumbnails_string)
 
 def handle_dimension(root):
     worksheets = root.findall(".//worksheets")
@@ -520,7 +526,6 @@ def get_view_list(xml_string):
 
     return view_list
 
-
 def xml_view_manipulation(xml_string):
     looker_data_type = {
         "string": "string",
@@ -552,24 +557,44 @@ def xml_view_manipulation(xml_string):
     }
     tree = ET.ElementTree(ET.fromstring(xml_string))
     root = tree.getroot()
-    root = handle_thumbnail(root)
+    root,_ = handle_thumbnail(root)
 
     collection_relations= root.findall(".//relation[@type='collection']")
+    join_relations= root.findall(".//relation[@type='join']")
 
     relations = []
     
-    if len(collection_relations)>0:
-        for collection_relation in collection_relations:  # Iterate through the list
-            relations.extend(collection_relation.findall(".//relation[@type='table']"))
+    if len(collection_relations)>0 or len(join_relations)>0:
+        if len(collection_relations)>0:
+            for collection_relation in collection_relations:  # Iterate through the list
+                relations.extend(collection_relation.findall(".//relation[@type='table']"))
+                relations.extend(collection_relation.findall(".//relation[@type='text']"))
+        elif len(join_relations)>0:
+            for join_relation in join_relations:  # Iterate through the list
+                relations.extend(join_relation.findall(".//relation[@type='table']"))
+                relations.extend(collection_relation.findall(".//relation[@type='text']"))
+        else:
+            pass
+
+        relation_list = [ET.tostring(relation, encoding="utf-8").decode("utf-8").strip() for relation in relations]
+        relations = list(dict.fromkeys(relation_list))
+        
         
         view_text_list = {}
-        for relation in relations:
+        for relation_str in relations:
+            relation = ET.fromstring(relation_str)
             view_text = ""
-            view_text += f'<relations>\n\t{ET.tostring(relation, encoding="utf-8").decode("utf-8").strip()}\n</relations>\n\n'
+            view_text += "<relations>\n"
+            if relation.get('type') == "text":
+                relation.set('looker_derived', 'yes')
+                view_text += str(f"\t{ET.tostring(relation, encoding='utf-8').decode('utf-8').strip()}\n")
+            else:
+                view_text += f"\t{ET.tostring(relation, encoding='utf-8').decode('utf-8').strip()}\n"
+            view_text += "<\\relations>\n\n"
             relation_name = relation.get('name')
 
             cols = root.findall(".//map[@value]")
-            col_list = [ET.tostring(col, encoding="utf-8").decode("utf-8").strip() for col in cols]
+            col_list = [ET.tostring(col, encoding='utf-8').decode('utf-8').strip() for col in cols]
             col_list = list(dict.fromkeys(col_list))
 
             map_key = []
@@ -663,9 +688,26 @@ def xml_view_manipulation(xml_string):
                 view_text += "<columns>\n"
                 for column in column_list:
                     col_name.append(column.get('name'))
-                    view_text += f'\t{ET.tostring(column, encoding="utf-8").decode("utf-8").strip()}\n'
+                    view_text += f"\t{ET.tostring(column, encoding='utf-8').decode('utf-8').strip()}\n"
                 view_text += "<\\columns>\n\n"
 
+            calculations = root.findall(".//calculation")
+            calculation_list = []
+            for calculation in calculations:
+                if relation_name in c.get('value').split(']')[0].split('[')[1]:
+                    calculation_list.append(ET.tostring(calculation, encoding="utf-8").decode("utf-8").strip())
+            calculation_list = list(dict.fromkeys(calculation_list))
+            
+            if len(calculation_list)>0:
+                view_text += "<calculations>\n"
+                for calculation in calculation_list:
+                    col_name = calculation.split(')')[0].split('(')[1]
+                    for col in col_list:
+                        c = ET.fromstring(col)
+                        if col_name in c.get('key').split(']')[0].split('[')[1]:
+                            view_text += f"\t{calculation}\n"
+                view_text += "<\\calculations>\n"
+                
             filters = root.findall(".//filter")
             filter_list = []
             for filter in filters:
@@ -674,23 +716,31 @@ def xml_view_manipulation(xml_string):
             filter_list = list(dict.fromkeys(filter_list))
 
             if len(filter_list)>0:
+                view_text += "<filters>\n"
                 for filter in filter_list:
                     view_text += f"\t{filter}\n"
+                view_text += "</filters>\n"
             
             view_text_list[relation_name] = view_text
         
         return view_text_list
     else:
         view_text = ""
-
-        relations = root.findall(".//relation[@type='table']")
+        relations = []
+        relations.extend(root.findall(".//relation[@type='table']"))
+        relations.extend(root.findall(".//relation[@type='text']"))
         relation_list = [ET.tostring(relation, encoding="utf-8").decode("utf-8").strip() for relation in relations]
         relation_list = list(dict.fromkeys(relation_list))
         relation_name = ET.fromstring(relation_list[0]).get('name')
         if len(relation_list)>0:
             view_text += "<relations>\n"
-            for relation in relation_list:
-                view_text += f"\t{relation}\n"
+            for relation_str in relation_list:
+                relation = ET.fromstring(relation_str)
+                if relation.get('type') == 'text':
+                    relation.set('looker_derived', 'yes')
+                    view_text += str(f"\t{ET.tostring(relation, encoding='utf-8').decode('utf-8').strip()}\n")
+                else:
+                    view_text += f"\t{relation_str}\n"
             view_text += "<\\relations>\n\n"
 
         cols = root.findall(".//map[@value]")
@@ -777,13 +827,26 @@ def xml_view_manipulation(xml_string):
                 view_text += f"\t{column}\n"
             view_text += "<\\columns>\n\n"
 
+        calculations = root.findall(".//calculation")
+        calculation_list = []
+        calculation_list = [ET.tostring(calculation, encoding="utf-8").decode("utf-8").strip() for calculation in calculations]
+        calculation_list = list(dict.fromkeys(calculation_list))
+        
+        if len(calculation_list)>0:
+            view_text += "<calculations>\n"
+            for calculation in calculation_list:
+                view_text += f"\t{calculation}\n"
+            view_text += "<\\calculations>\n"
+
         filters = root.findall(".//filter")
         filter_list = [ET.tostring(filter, encoding="utf-8").decode("utf-8").strip() for filter in filters]
         filter_list = list(dict.fromkeys(filter_list))
 
         if len(filter_list)>0:
+            view_text += "<filters>\n"
             for filter in filter_list:
                 view_text += f"\t{filter}\n"
+            view_text += "</filters>\n"
 
         return {relation_name: view_text}
 
@@ -829,6 +892,31 @@ def xml_layout_manipulation(worksheet_names, dashboard):
 
     return layout_dashboard
 
+def resize_image(image_data, max_size=(500, 500)): # Example max size
+    """Resizes an image to fit within max_size."""
+    try:
+        img = Image.open(BytesIO(base64.b64decode(image_data))) # Decode base64 first to get binary data.
+        img.thumbnail(max_size)  # Resize while maintaining aspect ratio
+        buffered = BytesIO()
+        img.save(buffered, format="PNG")  # Save resized image to buffer
+        return base64.b64encode(buffered.getvalue()).decode("utf-8") # Return new base64 string
+    except Exception as e:
+        print(f"Error resizing image: {e}")
+        return None
+
+def get_chart_type(name, thumbnails):
+    thumbnail = thumbnails.find(f".//thumbnail[@name='{name}']")
+    img_64 = thumbnail.text
+
+    resized_img_64 = resize_image(img_64)  # Resize using the function from previous response
+    if resized_img_64:
+        response = generate_image_response_with_gemini(resized_img_64)
+        response = eval(response[7:-3])
+    else:
+        response = None
+
+    return response
+
 def xml_dashboard_manipulation(xml_string):
     try:
         tree = ET.ElementTree(ET.fromstring(xml_string))
@@ -836,7 +924,7 @@ def xml_dashboard_manipulation(xml_string):
     except ET.ParseError as e:
         raise e
 
-    root = handle_thumbnail(root)
+    root, thumbnails = handle_thumbnail(root)
 
     final_dashboard_list = {}
 
@@ -852,7 +940,12 @@ def xml_dashboard_manipulation(xml_string):
         worksheets = root.find(".//worksheets")
         root.remove(worksheets)
         for worksheet in worksheets.findall(".//worksheet"):
-            # worksheet = handle_pivot(worksheet)
+            result_json = get_chart_type(worksheet.get("name"), thumbnails)
+            if result_json:
+                worksheet.set("looker_chart_type", result_json['looker_type'])
+                # worksheet.set("generic_chart_type", result_json['name'])
+                if result_json['stacked_type'] != 'No':
+                    worksheet.set("stacked_type", result_json['stacked_type'])
             worksheet_dict[worksheet.get("name")] = worksheet
             worksheets.remove(worksheet)
         
@@ -869,17 +962,18 @@ def xml_dashboard_manipulation(xml_string):
 
             for zone in dashboard.findall(".//zone"):
                 if zone.get('name') in worksheet_dict:
-                    worksheet_temp.append(worksheet_dict[zone.get('name')])
+                    if zone.get('param', None) == None:
+                        worksheet_temp.append(worksheet_dict[zone.get('name')])
             dashboard_temp.append(dashboard)
 
             root_temp.append(worksheet_temp)
             root_temp.append(dashboard_temp)
 
             final_dashboard_list[dashboard.get('name')] = ET.tostring(root_temp, encoding="utf-8").decode("utf-8").strip() + f"\n\nDashboard Name: {dashboard_name}\n\nuse this layout for looker dashboards\n\n{layout}"
-            print(f"\n\nDashboard Name: {dashboard_name}\n\nuse this layout for looker dashboards\n\n{layout}")
         return final_dashboard_list
     else: 
         return {"dashboard": root}
+
 def process_view(view_content, workbook_name):
     view = """
 ```view
