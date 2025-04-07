@@ -289,30 +289,30 @@ def process_workbook():
         
         file_logger(process_id, f"<DASHBOARD> Completed Dashboard Building.")
 
-        cleanup_steps = [
-            (f"<FLAG> Finishing up processing", 
-             lambda: upload_folder_to_gcs(
-                 LOOKER_PROJECT_ID, BUCKET_NAME, 
-                 workbook_base_name, workbook_base_name
-             )),
-            (f"<FLAG> Completed Views, Model and Dashboards", 
-             lambda: clear_cache_folder(
-                 workbook_base_name, f"{workbook_base_name}.twb"
-             )),
-            (f"<FLAG> Uploading to GitHub", 
-             lambda: download_gcs_folder(
-                 BUCKET_NAME, LOOKER_PROJECT_ID, LOOKER_PROJECT_ID
-             )),
-            (f"<FINISH_FLAG> Code conversion COMPLETED for {workbook_name}", 
-             lambda: upload_to_github(LOOKER_PROJECT_ID)),
-            (f"DONE", 
-             lambda: clear_cache_folder(LOOKER_PROJECT_ID))
-        ]
+        # cleanup_steps = [
+        #     (f"<FLAG> Finishing up processing", 
+        #      lambda: upload_folder_to_gcs(
+        #          LOOKER_PROJECT_ID, BUCKET_NAME, 
+        #          workbook_base_name, workbook_base_name
+        #      )),
+        #     (f"<FLAG> Completed Views, Model and Dashboards", 
+        #      lambda: clear_cache_folder(
+        #          workbook_base_name, f"{workbook_base_name}.twb"
+        #      )),
+        #     (f"<FLAG> Uploading to GitHub", 
+        #      lambda: download_gcs_folder(
+        #          BUCKET_NAME, LOOKER_PROJECT_ID, LOOKER_PROJECT_ID
+        #      )),
+        #     (f"<FINISH_FLAG> Code conversion COMPLETED for {workbook_name}", 
+        #      lambda: upload_to_github(LOOKER_PROJECT_ID)),
+        #     (f"DONE", 
+        #      lambda: clear_cache_folder(LOOKER_PROJECT_ID))
+        # ]
 
-        for message, operation in cleanup_steps:
-            file_logger(process_id, message)
-            log_pubsub(message)
-            operation()
+        # for message, operation in cleanup_steps:
+        #     file_logger(process_id, message)
+        #     log_pubsub(message)
+        #     operation()
         
         success_message = "Processing completed successfully"
         log_pubsub(success_message)

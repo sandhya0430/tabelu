@@ -1,0 +1,625 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20243.25.0110.1701                               -->
+<workbook locale='en_US' original-version='18.1' source-build='2024.3.0 (20243.25.0110.1701)' version='18.1' xml:base='http://localhost:9100' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AccessibleZoneTabOrder />
+    <AnimationOnByDefault />
+    <AutoCreateAndUpdateDSDPhoneLayouts />
+    <IntuitiveSorting />
+    <IntuitiveSorting_SP2 />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SetMembershipControl />
+    <SheetIdentifierTracking />
+    <SortTagCleanup />
+    <WindowsPersistSimpleIdentifiers />
+    <WorksheetBackgroundTransparency />
+    <ZoneBackgroundTransparency />
+  </document-format-change-manifest>
+  <repository-location derived-from='https://prod-apnortheast-a.online.tableau.com/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard?rev=1.3' id='Country_Data_Dashboard' path='/t/domnicinfantraj2412-90295e1227/workbooks' revision='1.5' site='domnicinfantraj2412-90295e1227' />
+  <preferences />
+  <datasources>
+    <datasource caption='Country_Data' inline='true' name='federated.0v5fkfi0lkfu2114nr0340tmz3km' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='BigQuery' name='bigquery.0tusgtc0xbzfn616q7lus1fwq6kv'>
+            <connection CATALOG='elastic-pocs' EXECCATALOG='elastic-pocs' authentication='auth-oauth-service-account' class='bigquery' connection-dialect='google-sql' project='elastic-pocs' schema='pixel_perfect' server-oauth='server-custom' username='domnic@squareshift.co' />
+          </named-connection>
+        </named-connections>
+        <relation connection='bigquery.0tusgtc0xbzfn616q7lus1fwq6kv' name='aaa_map' table='[elastic-pocs.pixel_perfect].[aaa_map]' type='table' />
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>DATE</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[DATE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>DATE</remote-alias>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>COUNTRY</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[COUNTRY]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>COUNTRY</remote-alias>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>STATE</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[STATE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>STATE</remote-alias>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>CITY</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[CITY]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>CITY</remote-alias>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>PINCODE</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[PINCODE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>PINCODE</remote-alias>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>VALUE</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[VALUE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>VALUE</remote-alias>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>LATITUDE</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[LATITUDE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>LATITUDE</remote-alias>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>LONGITUDE</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[LONGITUDE]</local-name>
+            <parent-name>[aaa_map]</parent-name>
+            <remote-alias>LONGITUDE</remote-alias>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[aaa_map_140A1FB57CD8478A97F6FC9360142966]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='City' datatype='string' name='[CITY]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column caption='Country' datatype='string' name='[COUNTRY]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+      <column caption='Date' datatype='date' name='[DATE]' role='dimension' type='ordinal' />
+      <column aggregation='Avg' caption='Latitude' datatype='real' name='[LATITUDE]' role='measure' semantic-role='[Geographical].[Latitude]' type='quantitative' />
+      <column aggregation='Avg' caption='Longitude' datatype='real' name='[LONGITUDE]' role='measure' semantic-role='[Geographical].[Longitude]' type='quantitative' />
+      <column caption='Pincode' datatype='integer' name='[PINCODE]' role='measure' type='quantitative' />
+      <column caption='State' datatype='string' name='[STATE]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='Value' datatype='integer' name='[VALUE]' role='measure' type='quantitative' />
+      <column caption='aaa_map' datatype='table' name='[__tableau_internal_object_id__].[aaa_map_140A1FB57CD8478A97F6FC9360142966]' role='measure' type='quantitative' />
+      <drill-paths>
+        <drill-path name='COUNTRY, STATE, CITY' />
+      </drill-paths>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;India&quot;' />
+      </semantic-values>
+      <field-sort-info field-sort-order-type='custom-order'>
+        <field-sort-custom-order field='name (college_data)' />
+        <field-sort-custom-order field='Calculation_670754916131164160' />
+        <field-sort-custom-order field='degree' />
+        <field-sort-custom-order field='year' />
+        <field-sort-custom-order field='semester' />
+        <field-sort-custom-order field='subject' />
+        <field-sort-custom-order field='score' />
+      </field-sort-info>
+      <object-graph>
+        <objects>
+          <object caption='aaa_map' id='aaa_map_140A1FB57CD8478A97F6FC9360142966'>
+            <properties context=''>
+              <relation connection='bigquery.0tusgtc0xbzfn616q7lus1fwq6kv' name='aaa_map' table='[elastic-pocs.pixel_perfect].[aaa_map]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Detail Report'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontsize='12'>&lt;Sheet Name&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <repository-location derived-from='https://prod-apnortheast-a.online.tableau.com/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard/DetailReport?rev=' id='DetailReport' path='/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard' revision='' site='domnicinfantraj2412-90295e1227' />
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Country_Data' name='federated.0v5fkfi0lkfu2114nr0340tmz3km' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0v5fkfi0lkfu2114nr0340tmz3km'>
+            <column caption='City' datatype='string' name='[CITY]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+            <column caption='Country' datatype='string' name='[COUNTRY]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+            <column caption='Date' datatype='date' name='[DATE]' role='dimension' type='ordinal' />
+            <column caption='State' datatype='string' name='[STATE]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='Value' datatype='integer' name='[VALUE]' role='measure' type='quantitative' />
+            <column-instance column='[DATE]' derivation='Month' name='[mn:DATE:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[CITY]' derivation='None' name='[none:CITY:nk]' pivot='key' type='nominal' />
+            <column-instance column='[COUNTRY]' derivation='None' name='[none:COUNTRY:nk]' pivot='key' type='nominal' />
+            <column-instance column='[STATE]' derivation='None' name='[none:STATE:nk]' pivot='key' type='nominal' />
+            <column-instance column='[DATE]' derivation='Quarter' name='[qr:DATE:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[VALUE]' derivation='Sum' name='[sum:VALUE:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[DATE]' derivation='Year' name='[yr:DATE:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' filter-group='4'>
+            <groupfilter count='5' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+              <groupfilter direction='DESC' expression='SUM([VALUE])' function='order' user:ui-marker='order'>
+                <groupfilter function='level-members' level='[none:STATE:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='width' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[mn:DATE:ok]' value='109' />
+          </style-rule>
+          <style-rule element='header'>
+            <format attr='width' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:CITY:nk]' value='200' />
+            <format attr='width' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' value='152' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='size-bar' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]' field-type='quantitative' max-size='1' min-size='0.005' type='centersize' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk] / ([federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk] / ([federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:CITY:nk] / ([federated.0v5fkfi0lkfu2114nr0340tmz3km].[yr:DATE:ok] / ([federated.0v5fkfi0lkfu2114nr0340tmz3km].[qr:DATE:ok] / [federated.0v5fkfi0lkfu2114nr0340tmz3km].[mn:DATE:ok])))))</rows>
+        <cols />
+      </table>
+      <simple-id uuid='{96852C18-36B2-4293-88C4-D5FC245128A4}' />
+    </worksheet>
+    <worksheet name='Monthly Data'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontsize='12'>&lt;Sheet Name&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <repository-location derived-from='https://prod-apnortheast-a.online.tableau.com/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard/MonthlyData?rev=' id='MonthlyData' path='/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard' revision='' site='domnicinfantraj2412-90295e1227' />
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Country_Data' name='federated.0v5fkfi0lkfu2114nr0340tmz3km' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0v5fkfi0lkfu2114nr0340tmz3km'>
+            <column caption='Date' datatype='date' name='[DATE]' role='dimension' type='ordinal' />
+            <column caption='State' datatype='string' name='[STATE]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='Value' datatype='integer' name='[VALUE]' role='measure' type='quantitative' />
+            <column-instance column='[STATE]' derivation='None' name='[none:STATE:nk]' pivot='key' type='nominal' />
+            <column-instance column='[VALUE]' derivation='Sum' name='[sum:VALUE:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[DATE]' derivation='Month-Trunc' name='[tmn:DATE:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[DATE]' derivation='Year' name='[yr:DATE:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' filter-group='4'>
+            <groupfilter count='5' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+              <groupfilter direction='DESC' expression='SUM([VALUE])' function='order' user:ui-marker='order'>
+                <groupfilter function='level-members' level='[none:STATE:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[tmn:DATE:ok]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]' shelf='rows' />
+          </shelf-sorts>
+          <slices>
+            <column>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+          </pane>
+        </panes>
+        <rows>([federated.0v5fkfi0lkfu2114nr0340tmz3km].[yr:DATE:ok] / [federated.0v5fkfi0lkfu2114nr0340tmz3km].[tmn:DATE:ok])</rows>
+        <cols>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]</cols>
+      </table>
+      <simple-id uuid='{67D67902-BDA9-4224-BC7E-BD83CC63DA69}' />
+    </worksheet>
+    <worksheet name='Top 5 State by value'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontsize='12'>&lt;Sheet Name&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <repository-location derived-from='https://prod-apnortheast-a.online.tableau.com/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard/Top5Statebyvalue?rev=' id='Top5Statebyvalue' path='/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard' revision='' site='domnicinfantraj2412-90295e1227' />
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Country_Data' name='federated.0v5fkfi0lkfu2114nr0340tmz3km' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0v5fkfi0lkfu2114nr0340tmz3km'>
+            <column caption='Country' datatype='string' name='[COUNTRY]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+            <column caption='State' datatype='string' name='[STATE]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='Value' datatype='integer' name='[VALUE]' role='measure' type='quantitative' />
+            <column-instance column='[COUNTRY]' derivation='None' name='[none:COUNTRY:nk]' pivot='key' type='nominal' />
+            <column-instance column='[STATE]' derivation='None' name='[none:STATE:nk]' pivot='key' type='nominal' />
+            <column-instance column='[VALUE]' derivation='Sum' name='[sum:VALUE:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]'>
+            <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]'>
+            <groupfilter function='level-members' level='[none:COUNTRY:nk]' />
+          </filter>
+          <filter class='categorical' column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' filter-group='4'>
+            <groupfilter count='5' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+              <groupfilter direction='DESC' expression='SUM([VALUE])' function='order' user:ui-marker='order'>
+                <groupfilter function='level-members' level='[none:STATE:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <manual-sort column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;Texas&quot;</bucket>
+              <bucket>&quot;California&quot;</bucket>
+              <bucket>&quot;Florida&quot;</bucket>
+              <bucket>&quot;New York&quot;</bucket>
+              <bucket>&quot;Ohio&quot;</bucket>
+              <bucket>%all%</bucket>
+            </dictionary>
+          </manual-sort>
+          <slices>
+            <column>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]</column>
+            <column>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</column>
+            <column>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='header'>
+            <format attr='width' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' value='200' />
+            <format attr='width' field='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]' value='112' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[Multiple Values]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk] / [federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk])</rows>
+        <cols>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]</cols>
+      </table>
+      <simple-id uuid='{588537D8-231E-41FD-8FB3-37F0C8FD1E94}' />
+    </worksheet>
+  </worksheets>
+  <dashboards>
+    <dashboard enable-sort-zone-taborder='true' name='Country Data Dashboard'>
+      <repository-location derived-from='https://prod-apnortheast-a.online.tableau.com/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard/CountryDataDashboard?rev=' id='CountryDataDashboard' path='/t/domnicinfantraj2412-90295e1227/workbooks/Country_Data_Dashboard' revision='' site='domnicinfantraj2412-90295e1227' />
+      <style>
+        <style-rule element='table'>
+          <format attr='background-color' value='#e9f3f2' />
+        </style-rule>
+        <style-rule element='dash-text'>
+          <format attr='text-align' id='dash-text_12' value='center' />
+          <format attr='vertical-align' id='dash-text_12' value='center' />
+        </style-rule>
+      </style>
+      <size maxheight='900' maxwidth='1400' minheight='900' minwidth='1400' sizing-mode='fixed' />
+      <datasources>
+        <datasource caption='Country_Data' name='federated.0v5fkfi0lkfu2114nr0340tmz3km' />
+      </datasources>
+      <datasource-dependencies datasource='federated.0v5fkfi0lkfu2114nr0340tmz3km'>
+        <column caption='Country' datatype='string' name='[COUNTRY]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+        <column caption='State' datatype='string' name='[STATE]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+        <column-instance column='[COUNTRY]' derivation='None' name='[none:COUNTRY:nk]' pivot='key' type='nominal' />
+        <column-instance column='[STATE]' derivation='None' name='[none:STATE:nk]' pivot='key' type='nominal' />
+      </datasource-dependencies>
+      <zones>
+        <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
+          <zone h='98222' id='7' param='horz' type-v2='layout-flow' w='98858' x='571' y='889'>
+            <zone h='98222' id='5' type-v2='layout-basic' w='98858' x='571' y='889' />
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+        <zone h='33222' id='3' name='Top 5 State by value' w='44286' x='857' y='27333' />
+        <zone h='33333' id='10' name='Monthly Data' w='53286' x='45929' y='27111' />
+        <zone h='33333' id='11' name='Detail Report' w='98286' x='571' y='62778' />
+        <zone forceUpdate='true' h='9333' id='12' type-v2='text' w='97643' x='857' y='2333'>
+          <formatted-text>
+            <run bold='true' fontcolor='#000000' fontsize='14'>Country Data Dashboard</run>
+          </formatted-text>
+        </zone>
+        <zone h='9111' id='8' mode='dropdown' name='Top 5 State by value' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]' type-v2='filter' w='31857' x='1071' y='13778' />
+        <zone h='9444' id='9' mode='checkdropdown' name='Top 5 State by value' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' type-v2='filter' w='20071' x='37143' y='13889' />
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='1050' minheight='1050' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='28' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98222' id='27' param='vert' type-v2='layout-flow' w='98858' x='571' y='889'>
+                <zone forceUpdate='true' h='9333' id='12' type-v2='text' w='97643' x='857' y='2333'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#000000' fontsize='14'>Country Data Dashboard</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='33333' id='10' is-fixed='true' name='Monthly Data' w='53286' x='45929' y='27111'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='9111' id='8' mode='dropdown' name='Top 5 State by value' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]' type-v2='filter' w='31857' x='1071' y='13778'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone h='9444' id='9' mode='checkdropdown' name='Top 5 State by value' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' type-v2='filter' w='20071' x='37143' y='13889'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='33222' id='3' is-fixed='true' name='Top 5 State by value' w='44286' x='857' y='27333'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='33333' id='11' is-fixed='true' name='Detail Report' w='98286' x='571' y='62778'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+              </zone>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{EC38D77C-1C79-43D5-B031-37F2E8FCBAF3}' />
+    </dashboard>
+  </dashboards>
+  <windows source-height='37'>
+    <window class='worksheet' name='Top 5 State by value'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+            <card type='measures' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]' type='filter' />
+            <card mode='checkdropdown' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' type='filter' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:CITY:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{78709D35-DF81-4A24-B30C-45E194E93F9A}' />
+    </window>
+    <window class='worksheet' name='Monthly Data'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card mode='checklist' param='[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]' type='filter' values='database' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:CITY:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:COUNTRY:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[tmn:DATE:ok]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[yr:DATE:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{8401DCD2-4E66-497D-B249-44BDCBF72286}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Detail Report'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+          <strip size='160'>
+            <card type='title' />
+            <card type='columns' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[:Measure Names]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[mn:DATE:ok]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:CITY:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[none:STATE:nk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[qr:DATE:ok]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[sum:VALUE:qk]</field>
+            <field>[federated.0v5fkfi0lkfu2114nr0340tmz3km].[yr:DATE:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{E93290A2-7734-43AA-B7F9-593D210F2BFE}' />
+    </window>
+    <window class='dashboard' name='Country Data Dashboard'>
+      <viewpoints>
+        <viewpoint name='Detail Report'>
+          <zoom type='fit-width' />
+        </viewpoint>
+        <viewpoint name='Monthly Data'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Top 5 State by value'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='-1' />
+      <simple-id uuid='{10FEDE63-09E8-4F8B-9ED3-78FEAC9492A8}' />
+    </window>
+  </windows>
+</workbook>
